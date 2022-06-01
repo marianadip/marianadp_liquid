@@ -111,6 +111,13 @@ view: users {
     sql: ${TABLE}.zip ;;
   }
 
+
+  dimension: Ticket {
+    label: "Ticket"
+    sql: ${TABLE}.id ;;
+    html: <a href="/explore/marianadp_liquid/order_items?fields=order_items.order_id, users.first_name, users.last_name, users.id, order_items.count, order_items.sale_price&f[users.id]={{ value }}"><button>Ticket</button></a> ;;
+    }
+
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, orders.count]
