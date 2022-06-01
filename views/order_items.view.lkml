@@ -57,6 +57,26 @@ view: order_items {
   # measures for this dimension, but you can also add measures of many different aggregates.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
 
+  measure: total_revenue{
+    type: sum
+    sql: ${sale_price} ;;
+    value_format_name: usd
+  }
+
+  measure: total_revenue_conditional {
+    type: sum
+    sql: ${sale_price} ;;
+    value_format_name: usd
+    html: {% if value > 3000.00 %}
+          <p style="color: white; background-color: #33FF36; margin: 0; border-radius: 5px; text-align:center">{{ rendered_value }}</p>
+          {% elsif value > 1000.00 %}
+          <p style="color: white; background-color: ##FFC20A; margin: 0; border-radius: 5px; text-align:center">{{ rendered_value }}</p>
+          {% else %}
+          <p style="color: white; background-color: #F38785; margin: 0; border-radius: 5px; text-align:center">{{ rendered_value }}</p>
+          {% endif %}
+          ;;
+  }
+
   measure: total_sale_price {
     type: sum
     sql: ${sale_price} ;;
