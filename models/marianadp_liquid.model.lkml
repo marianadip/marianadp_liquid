@@ -61,6 +61,13 @@ explore: order_items {
     relationship: many_to_one
     sql_on: ${users_facts.user_id} = ${users.id} ;;
   }
+
+join: brand_order_facts {
+  view_label: "Brand order facts"
+type: left_outer
+sql_on: ${products.brand} = ${brand_order_facts.brand} ;;
+relationship: many_to_one
+}
   }
 
 explore: orders {
