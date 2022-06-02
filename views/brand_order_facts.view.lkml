@@ -6,7 +6,8 @@ view: brand_order_facts {
       derived_column: brand_rank {
         sql: row_number() over (order by total_revenue desc) ;;
         }
-        #bind_all_filters: yes
+      #filters: [order_items.created_date: "365 days"]
+       #bind_all_filters: yes
         bind_filters: {
           from_field: order_items.returned_date
           to_field: order_items.returned_date

@@ -1,7 +1,9 @@
 # The name of this view in Looker is "Users"
+include: location.view
 view: users {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
+  extends: [location]
   sql_table_name: public.users ;;
   drill_fields: [id]
   # This primary key is the unique key for this table in the underlying database.
@@ -36,26 +38,26 @@ view: users {
     sql: ${age} ;;
   }
 
-  dimension: city {
-    type: string
-    sql: ${TABLE}.city ;;
-    link: {
-      label: "Google"
-      url: "http://www.google.com/search?q={{ value }}"
-      icon_url: "http://google.com/favicon.ico"
-    }
-  }
+  #dimension: city {
+   # type: string
+    #sql: ${TABLE}.city ;;
+    #link: {
+     # label: "Google"
+      #url: "http://www.google.com/search?q={{ value }}"
+      #icon_url: "http://google.com/favicon.ico"
+    #}
+  #}
 
-  dimension: country {
-    type: string
-    map_layer_name: countries
-    sql: ${TABLE}.country ;;
-    link: {
-      label: "Google"
-      url: "http://www.google.com/search?q={{ value }}"
-      icon_url: "http://google.com/favicon.ico"
-    }
-  }
+  #dimension: country {
+   # type: string
+    #map_layer_name: countries
+    #sql: ${TABLE}.country ;;
+    #link: {
+     # label: "Google"
+      #url: "http://www.google.com/search?q={{ value }}"
+      #icon_url: "http://google.com/favicon.ico"
+    #}
+  #}
 
 
 
@@ -96,20 +98,20 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
-  dimension: state {
-    type: string
-    sql: ${TABLE}.state ;;
-  }
+  #dimension: state {
+   # type: string
+    #sql: ${TABLE}.state ;;
+  #}
 
   dimension: traffic_source {
     type: string
     sql: ${TABLE}.traffic_source ;;
   }
 
-  dimension: zip {
-    type: zipcode
-    sql: ${TABLE}.zip ;;
-  }
+  #dimension: zip {
+   # type: zipcode
+    #sql: ${TABLE}.zip ;;
+  #}
 
 
   dimension: Ticket {

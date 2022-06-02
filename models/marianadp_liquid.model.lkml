@@ -70,6 +70,46 @@ relationship: many_to_one
 }
   }
 
+explore: base_events {
+  extension: required
+  join: event_session_facts {
+    type: left_outer
+    sql_on: ${events.session_id} = ${event_session_facts.session_id} ;;
+    relationship: many_to_one
+  }
+  join: users {
+    type: left_outer
+    sql_on: ${events.user_id} = ${users.id} ;;
+    relationship: many_to_one
+  }
+}
+
+explore: events {
+  description: "Start here for Event analysis"
+  fields: [ALL_FIELDS*]
+  from: events
+  view_name: events
+  extends: [base_events]
+  join: event_session_funnel {
+    type: left_outer
+    sql_on: ${events.session_id} = ${event_session_funnel.session_id} ;;
+    relationship: many_to_one
+  }
+}
+
+explore: conversions {
+  description: "Start here for Conversion Analysis"
+  fields: [ALL_FIELDS*, -orders.count]
+  from: events
+  view_name: events
+  extends: [base_events]
+  join: orders {
+    type: left_outer
+    sql_on: ${users.id} = ${orders.user_id} ;;
+    relationship: many_to_many
+  }
+}
+
 explore: orders {
   join: users {
     type: left_outer
