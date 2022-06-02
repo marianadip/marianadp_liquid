@@ -14,7 +14,7 @@ view: brand_order_facts {
         }
       }
     }
-
+#
     dimension: brand_rank {
       hidden: yes
       type: number
