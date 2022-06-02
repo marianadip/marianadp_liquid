@@ -118,6 +118,16 @@ view: users {
     html: <a href="/explore/marianadp_liquid/order_items?fields=order_items.order_id, users.first_name, users.last_name, users.id, order_items.count, order_items.sale_price&f[users.id]={{ value }}"><button>Ticket</button></a> ;;
     }
 
+  dimension: state_link {
+    type: string
+    sql: ${TABLE}.state ;;
+    map_layer_name: us_states
+    html: {% if _explore._name == "order_items" %}
+          <a href="/explore/marianadp_liquid/order_items?fields=order_items.id*&f[users.state]= {{ value }}">{{ value }}</a>
+        {% else %}
+          <a href="/explore/marianadp_liquid/users?fields=users.id*&f[users.state]={{ value }}">{{ value }}</a>
+        {% endif %} ;;
+  }
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, orders.count]

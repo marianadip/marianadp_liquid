@@ -36,11 +36,13 @@ explore: order_items {
     relationship: many_to_one
   }
 
+
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
     relationship: many_to_one
   }
+
 
   join: users {
     type: left_outer
@@ -53,7 +55,13 @@ explore: order_items {
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
     relationship: many_to_one
   }
-}
+
+  join: users_facts {
+    view_label: "Users facts"
+    relationship: many_to_one
+    sql_on: ${users_facts.user_id} = ${users.id} ;;
+  }
+  }
 
 explore: orders {
   join: users {
@@ -69,12 +77,16 @@ explore: product_facts {
     sql_on: ${product_facts.product_id} = ${products.id} ;;
     relationship: many_to_one
   }
-}
+  }
+
+
+    explore: products {}
+
+    explore: users {}
+
+
+
 
 # To create more sophisticated Explores that involve multiple views, you can use the join parameter.
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
-
-explore: products {}
-
-explore: users {}

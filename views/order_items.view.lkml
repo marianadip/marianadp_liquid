@@ -7,6 +7,7 @@ view: order_items {
   # This primary key is the unique key for this table in the underlying database.
   # You need to define a primary key in a view in order to join to other views.
 
+
   dimension: id {
     primary_key: yes
     type: number
@@ -51,16 +52,32 @@ view: order_items {
     sql: ${TABLE}.sale_price ;;
   }
 
-
+  dimension: gross_margin {
+    type: number
+    value_format_name: usd
+    sql: ${sale_price} - ${inventory_items.cost} ;;
+  }
 
   # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
   # measures for this dimension, but you can also add measures of many different aggregates.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
 
+  measure: total_gross_margin {
+    label: "Total Gross Margin"
+    type: sum
+    value_format_name: usd
+    sql: ${gross_margin} ;;
+  }
+
   measure: total_revenue{
     type: sum
     sql: ${sale_price} ;;
     value_format_name: usd
+  }
+  measure: total_gross_margin_percentage {
+    type: number
+    value_format_name: percent_2
+    sql: 1.0 * ${total_gross_margin}/ NULLIF(${total_sale_price},0) ;;
   }
 
   measure: total_revenue_conditional {
@@ -91,4 +108,36 @@ view: order_items {
     type: count
     drill_fields: [id, orders.id, inventory_items.id]
   }
+
+  parameter: metric_selector {
+    type: string
+    allowed_value: {
+      label: "Total Revenue"
+      value: "total_revenue"
+    }
+    allowed_value: {
+      label: "Total gross margin"
+      value: "total_gross_margin"
+    }
+    allowed_value: {
+      label: "Total gross margin percentage"
+      value: "total_gross_margin_percentage"
+    }
+  }
+
+  measure: metric {
+    label_from_parameter: metric_selector
+    label: "Metric Selector Measure"
+    type: number
+    #value_format: "$0.0,\"K\""
+    sql:
+      CASE
+      WHEN {% parameter metric_selector %} = 'total_revenue' THEN ${total_revenue}
+      WHEN {% parameter metric_selector %} = 'total_gross_margin' THEN ${total_gross_margin}
+      WHEN {% parameter metric_selector %} = 'total_gross_margin_percentage' THEN ${total_gross_margin_percentage}
+      ELSE NULL
+    END ;;
+  }
+
+
 }
